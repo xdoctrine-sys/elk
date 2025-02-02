@@ -44,10 +44,26 @@ onMounted(async () => {
 onClickOutside(input, () => {
   autocompleteShow.value = false
 })
+
+watch(server, (newValue) => {
+  console.log('Server value:', newValue)
+})
+
+const handleOauth = async () => {
+  try {
+    const serverUrl = server.value.startsWith('http') 
+      ? server.value 
+      : `https://${server.value}`
+    console.log('Attempting OAuth with:', serverUrl)
+    await oauth()
+  } catch (e) {
+    console.error('OAuth error:', e)
+  }
+}
 </script>
 
 <template>
-  <form text-center justify-center items-center max-w-150 py6 flex="~ col gap-3" @submit.prevent="oauth">
+  <form text-center justify-center items-center max-w-150 py6 flex="~ col gap-3" @submit.prevent="handleOauth">
     <div flex="~ center" items-end mb2 gap-x-2>
       <!-- <img :src="`/${''}logo.svg`" w-12 h-12 mxa height="48" width="48" :alt="$t('app_logo')" class="rtl-flip"> -->
       <div text-3xl>
