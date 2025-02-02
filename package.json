@@ -7,7 +7,7 @@
   "homepage": "https://elk.zone/",
   "main": "./nuxt.config.ts",
   "scripts": {
-    "build": "nuxi build",
+    "build": "node --max-old-space-size=4096 nuxi build",
     "dev": "nuxi dev --port 5314",
     "dev:pwa": "VITE_DEV_PWA=true nuxi dev --port 5314",
     "dev:mocked": "nuxi dev --port 5314 --dotenv .env.mock",
