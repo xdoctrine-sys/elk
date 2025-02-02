@@ -8,9 +8,6 @@ const autocompleteShow = ref(false)
 
 const { busy, error, displayError, server, oauth } = useSignIn(input)
 
-// Modifier pour utiliser le domaine complet
-server.value = 'therichmountain.com/home'  // Ajout du /home
-
 const fuse = shallowRef(new Fuse([] as string[]))
 
 const filteredServers = computed(() => {
@@ -90,35 +87,19 @@ function select(index: number) {
 
 onMounted(async () => {
   input?.value?.focus()
-  // Supprimer le chargement de knownServers car nous n'en avons pas besoin
-  // knownServers.value = await (globalThis.$fetch as any)('/api/list-servers')
+  knownServers.value = await (globalThis.$fetch as any)('/api/list-servers')
+  fuse.value = new Fuse(knownServers.value, { shouldSort: true })
 })
 
 onClickOutside(input, () => {
   autocompleteShow.value = false
 })
-
-// Modifier la fonction handleOauth pour gérer les erreurs
-const handleOauth = async () => {
-  try {
-    displayError.value = false
-    const serverUrl = server.value.startsWith('http') 
-      ? server.value 
-      : `https://${server.value}`
-    
-    console.log('Tentative de connexion à:', serverUrl)
-    await oauth()
-  } catch (e) {
-    console.error('Erreur de connexion:', e)
-    displayError.value = true
-  }
-}
 </script>
 
 <template>
-  <form text-center justify-center items-center max-w-150 py6 flex="~ col gap-3" @submit.prevent="handleOauth">
+  <form text-center justify-center items-center max-w-150 py6 flex="~ col gap-3" @submit.prevent="oauth">
     <div flex="~ center" items-end mb2 gap-x-2>
-      <!-- <img :src="`/${''}logo.svg`" w-12 h-12 mxa height="48" width="48" :alt="$t('app_logo')" class="rtl-flip"> -->
+      <img :src="`/${''}logo.svg`" w-12 h-12 mxa height="48" width="48" :alt="$t('app_logo')" class="rtl-flip">
       <div text-3xl>
         {{ $t('action.sign_in') }}
       </div>
@@ -140,8 +121,6 @@ const handleOauth = async () => {
         <input
           ref="input"
           v-model="server"
-          readonly
-          disabled
           autocapitalize="off"
           inputmode="url"
           outline-none bg-transparent w-full max-w-50
