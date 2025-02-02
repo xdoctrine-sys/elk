@@ -31,16 +31,7 @@ function toggleDark() {
       <CommonTooltip :content="$t('magic_keys.dialog_header')">
         <button flex i-ri:keyboard-box-line dark-i-ri:keyboard-box-line text-lg :aria-label="$t('magic_keys.dialog_header')" @click="toggleKeyboardShortcuts" />
       </CommonTooltip>
-      <CommonTooltip :content="$t('settings.about.sponsor_action')">
-        <NuxtLink
-          flex
-          text-lg
-          i-ri-heart-3-line hover="i-ri-heart-3-fill text-rose"
-          :aria-label="$t('settings.about.sponsor_action')"
-          href="https://github.com/sponsors/elk-zone"
-          target="_blank"
-        />
-      </CommonTooltip>
+
     </div>
     <div>
       <i18n-t v-if="isHydrated" keypath="nav.built_at">
@@ -82,18 +73,6 @@ function toggleDark() {
           {{ $t('nav.privacy') }}
         </NuxtLink>
       </template>
-      &middot;
-      <NuxtLink href="/m.webtoo.ls/@elk" target="_blank">
-        Mastodon
-      </NuxtLink>
-      &middot;
-      <NuxtLink href="https://chat.elk.zone" target="_blank" external>
-        Discord
-      </NuxtLink>
-      &middot;
-      <NuxtLink href="https://github.com/elk-zone/elk" target="_blank" external>
-        GitHub
-      </NuxtLink>
     </div>
   </footer>
 </template>
