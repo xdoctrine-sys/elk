@@ -16,6 +16,6 @@ const userSettings = useUserSettings()
     text-link-rounded
   >
     <AccountDisplayName :account="account" :hide-emojis="getPreferences(userSettings, 'hideUsernameEmojis')" font-bold line-clamp-1 ws-pre-wrap break-all />
-    <AccountHandle :account="account" class="zen-none" />
+    <!-- <AccountHandle :account="account" class="zen-none" /> -->
   </NuxtLink>
 </template>
