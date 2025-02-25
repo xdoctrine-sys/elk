@@ -21,6 +21,7 @@ const availableNavButtons: NavButton[] = [
   { name: 'federated', label: 'nav.federated', icon: 'i-ri:earth-line' },
   { name: 'list', label: 'nav.lists', icon: 'i-ri:list-check' },
   { name: 'hashtag', label: 'nav.hashtags', icon: 'i-ri:hashtag' },
+  { name: 'lives', label: 'nav.lives', icon: 'i-ri:live-line' },
   { name: 'moreMenu', label: 'nav.more_menu', icon: 'i-ri:more-fill' },
 ] as const
 
