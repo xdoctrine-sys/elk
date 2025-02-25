@@ -12,7 +12,6 @@ import {
   NavButtonHome,
   NavButtonList,
   NavButtonLocal,
-  NavButtonLives,
   NavButtonMention,
   NavButtonMoreMenu,
   NavButtonNotification,
@@ -39,7 +38,6 @@ const navButtons: NavButton[] = [
   { name: 'federated', component: NavButtonFederated },
   { name: 'list', component: NavButtonList },
   { name: 'hashtag', component: NavButtonHashtag },
-  { name: 'lives', component: NavButtonLives },
   { name: 'moreMenu', component: NavButtonMoreMenu },
 ]
 
