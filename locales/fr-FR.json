@@ -294,7 +294,8 @@
     "settings": "Paramètres",
     "show_intro": "Ré-afficher l'introduction",
     "toggle_theme": "Changer de thème",
-    "zen_mode": "Mode Zen"
+    "zen_mode": "Mode Zen",
+    "lives": "Lives"
   },
   "notification": {
     "favourited_post": "a aimé votre message",
@@ -707,5 +708,9 @@
     "public_desc": "Visible par tout le monde",
     "unlisted": "Non listé",
     "unlisted_desc": "Visible pour tous, mais sans fonctionnalités de découverte"
+  },
+  "lives": {
+    "title": "Lives en cours",
+    "description": "Description du live stream"
   }
 }

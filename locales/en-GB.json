@@ -22,7 +22,8 @@
     "show_favourited_and_boosted_by": "Show who favourited and boosted"
   },
   "nav": {
-    "favourites": "Favourites"
+    "favourites": "Favourites",
+    "lives": "Lives"
   },
   "notification": {
     "favourited_post": "favourited your post"
@@ -63,5 +64,9 @@
   "user": {
     "sign_in_desc": "Sign in to follow profiles or hashtags, favourite, share and reply to posts, or interact from your account on a different server.",
     "single_instance_sign_in_desc": "Sign in to follow profiles or hashtags, favourite, share and reply to posts."
+  },
+  "lives": {
+    "title": "Current Lives",
+    "description": "Live stream description"
   }
 }

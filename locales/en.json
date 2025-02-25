@@ -331,7 +331,8 @@
     "settings": "Settings",
     "show_intro": "Show intro",
     "toggle_theme": "Toggle Theme",
-    "zen_mode": "Zen Mode"
+    "zen_mode": "Zen Mode",
+    "lives": "Lives"
   },
   "notification": {
     "and": "and",
@@ -765,5 +766,9 @@
     "public_desc": "Visible for all",
     "unlisted": "Unlisted",
     "unlisted_desc": "Visible for all, but opted-out of discovery features"
+  },
+  "lives": {
+    "title": "Current Lives",
+    "description": "Live stream description"
   }
 }
