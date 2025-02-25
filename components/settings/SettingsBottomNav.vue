@@ -27,7 +27,7 @@ const availableNavButtons: NavButton[] = [
 
 const defaultSelectedNavButtonNames = computed<NavButtonName[]>(() =>
   currentUser.value
-    ? ['home', 'search', 'notification', 'mention', 'moreMenu']
+    ? ['home', 'search', 'notification', 'lives', 'moreMenu']
     : ['explore', 'local', 'federated', 'moreMenu'],
 )
 const navButtonNamesSetting = useLocalStorage<NavButtonName[]>(STORAGE_KEY_BOTTOM_NAV_BUTTONS, defaultSelectedNavButtonNames.value)

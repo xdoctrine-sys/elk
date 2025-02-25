@@ -60,5 +60,14 @@ const moreMenuVisible = ref(false)
     class="after-content-empty after:(h-[calc(100%+0.5px)] w-0.1px pointer-events-none)"
   >
     <Component :is="navButton!.component" v-for="navButton in selectedNavButtons" :key="navButton!.name" :active-class="moreMenuVisible ? '' : 'text-primary'" />
+    <NuxtLink
+      v-if="hasButton('lives')"
+      to="/lives"
+      class="nav-button"
+      active-class="active"
+    >
+      <div i-ri:live-line />
+      <span class="nav-label">{{ $t('nav.lives') }}</span>
+    </NuxtLink>
   </nav>
 </template>
