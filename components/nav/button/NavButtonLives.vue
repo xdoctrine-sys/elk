@@ -11,16 +11,20 @@ const BADGE_STORAGE_KEY = 'elk-lives-badge-seen'
 
 onMounted(() => {
   // Vérifier si le badge a déjà été vu
-  const badgeSeen = localStorage.getItem(BADGE_STORAGE_KEY)
-  if (badgeSeen) {
-    showBadge.value = false
+  if (process.client) {
+    const badgeSeen = localStorage.getItem(BADGE_STORAGE_KEY)
+    if (badgeSeen) {
+      showBadge.value = false
+    }
   }
 })
 
 // Fonction pour masquer le badge quand l'utilisateur clique sur le lien
 function hideBadge() {
   showBadge.value = false
-  localStorage.setItem(BADGE_STORAGE_KEY, 'true')
+  if (process.client) {
+    localStorage.setItem(BADGE_STORAGE_KEY, 'true')
+  }
 }
 </script>
 

@@ -6,6 +6,10 @@ const colorMode = useColorMode()
 
 const userSettings = useUserSettings()
 
+// Ajout de la gestion du badge Lives
+const showLivesBadge = ref(true)
+const BADGE_STORAGE_KEY = 'elk-lives-badge-seen'
+
 const drawerEl = ref<HTMLDivElement>()
 
 function toggleVisible() {
@@ -112,6 +116,25 @@ const { dragging, dragDistance } = invoke(() => {
     dragging,
   }
 })
+
+onMounted(() => {
+  // Vérifier si le badge a déjà été vu
+  if (process.client) {
+    const badgeSeen = localStorage.getItem(BADGE_STORAGE_KEY)
+    if (badgeSeen) {
+      showLivesBadge.value = false
+    }
+  }
+})
+
+// Fonction pour masquer le badge quand l'utilisateur clique sur le lien
+function hideLivesBadge() {
+  showLivesBadge.value = false
+  if (process.client) {
+    localStorage.setItem(BADGE_STORAGE_KEY, 'true')
+  }
+  modelValue.value = false
+}
 </script>
 
 <template>
@@ -195,9 +218,21 @@ const { dragging, dragDistance } = invoke(() => {
               text-sm text-base capitalize text-left whitespace-nowrap
               transition-colors duration-200 transform
               hover="bg-gray-100 dark:(bg-gray-700 text-white)"
-              @click="modelValue = false"
+              @click="hideLivesBadge"
             >
-              <span class="i-ri:live-line flex-shrink-0 text-xl me-4 !align-middle" />
+              <div class="relative flex-shrink-0 text-xl me-4 !align-middle">
+                <span class="i-ri:live-line" />
+                <!-- Badge NEW avec transition -->
+                <Transition name="fade">
+                  <div 
+                    v-if="showLivesBadge" 
+                    class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-1 rounded-full"
+                    style="animation: pulse 2s infinite;"
+                  >
+                    NEW
+                  </div>
+                </Transition>
+              </div>
               {{ $t('nav.lives') }}
             </NuxtLink>
           </div>
@@ -206,3 +241,26 @@ const { dragging, dragDistance } = invoke(() => {
     </Transition>
   </div>
 </template>
+
+<style scoped>
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
