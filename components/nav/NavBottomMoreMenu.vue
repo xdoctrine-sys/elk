@@ -186,13 +186,21 @@ const { dragging, dragDistance } = invoke(() => {
               <span :class="getPreferences(userSettings, 'zenMode') ? 'i-ri:layout-right-2-line' : 'i-ri:layout-right-line'" class="flex-shrink-0 text-xl me-4 !align-middle" />
               {{ $t('nav.zen_mode') }}
             </button>
+            
+            <!-- Lives -->
+            <NuxtLink 
+              to="/lives"
+              flex flex-row items-center
+              block px-5 py-2 focus-blue w-full
+              text-sm text-base capitalize text-left whitespace-nowrap
+              transition-colors duration-200 transform
+              hover="bg-gray-100 dark:(bg-gray-700 text-white)"
+              @click="modelValue = false"
+            >
+              <span class="i-ri:live-line flex-shrink-0 text-xl me-4 !align-middle" />
+              {{ $t('nav.lives') }}
+            </NuxtLink>
           </div>
-
-          <!-- Ajouter ce lien pour Lives -->
-          <NuxtLink to="/lives" class="nav-more-item" @click="emit('close')">
-            <div i-ri:live-line />
-            <span>{{ $t('nav.lives') }}</span>
-          </NuxtLink>
         </div>
       </div>
     </Transition>
