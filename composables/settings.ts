@@ -12,4 +12,6 @@ export type NavButtonName =
   | 'list'
   | 'hashtag'
   | 'lives'
-  | 'moreMenu' 
+  | 'moreMenu'
+
+export { usePreferences } from './settings/index' 
