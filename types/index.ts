@@ -105,3 +105,19 @@ export interface BuildInfo {
   branch: string
   env: 'preview' | 'canary' | 'dev' | 'release'
 }
+
+export type NavButtonName =
+  | 'home'
+  | 'search'
+  | 'notification'
+  | 'mention'
+  | 'favorite'
+  | 'bookmark'
+  | 'compose'
+  | 'explore'
+  | 'local'
+  | 'federated'
+  | 'list'
+  | 'hashtag'
+  | 'lives'
+  | 'moreMenu'

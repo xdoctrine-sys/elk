@@ -11,6 +11,7 @@ import {
   NavButtonHashtag,
   NavButtonHome,
   NavButtonList,
+  NavButtonLives,
   NavButtonLocal,
   NavButtonMention,
   NavButtonMoreMenu,
@@ -38,11 +39,12 @@ const navButtons: NavButton[] = [
   { name: 'federated', component: NavButtonFederated },
   { name: 'list', component: NavButtonList },
   { name: 'hashtag', component: NavButtonHashtag },
+  { name: 'lives', component: NavButtonLives },
   { name: 'moreMenu', component: NavButtonMoreMenu },
 ]
 
 const defaultSelectedNavButtonNames: NavButtonName[] = currentUser.value
-  ? ['home', 'search', 'notification', 'mention', 'moreMenu']
+  ? ['home', 'search', 'notification', 'lives', 'moreMenu']
   : ['explore', 'local', 'federated', 'moreMenu']
 const selectedNavButtonNames = useLocalStorage<NavButtonName[]>(STORAGE_KEY_BOTTOM_NAV_BUTTONS, defaultSelectedNavButtonNames)
 
