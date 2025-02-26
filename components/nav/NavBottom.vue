@@ -46,6 +46,13 @@ const navButtons: NavButton[] = [
 const defaultSelectedNavButtonNames: NavButtonName[] = currentUser.value
   ? ['home', 'search', 'notification', 'lives', 'moreMenu']
   : ['explore', 'local', 'federated', 'moreMenu']
+
+// Forcer la réinitialisation des boutons de navigation pour inclure 'lives'
+// Cette ligne peut être retirée après le premier déploiement réussi
+if (process.client && selectedNavButtonNames.value && !selectedNavButtonNames.value.includes('lives') && currentUser.value) {
+  selectedNavButtonNames.value = defaultSelectedNavButtonNames
+}
+
 const selectedNavButtonNames = useLocalStorage<NavButtonName[]>(STORAGE_KEY_BOTTOM_NAV_BUTTONS, defaultSelectedNavButtonNames)
 
 const selectedNavButtons = computed(() => selectedNavButtonNames.value.map(name => navButtons.find(navButton => navButton.name === name)))

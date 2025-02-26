@@ -187,6 +187,12 @@ const { dragging, dragDistance } = invoke(() => {
               {{ $t('nav.zen_mode') }}
             </button>
           </div>
+
+          <!-- Ajouter ce lien pour Lives -->
+          <NuxtLink to="/lives" class="nav-more-item" @click="emit('close')">
+            <div i-ri:live-line />
+            <span>{{ $t('nav.lives') }}</span>
+          </NuxtLink>
         </div>
       </div>
     </Transition>

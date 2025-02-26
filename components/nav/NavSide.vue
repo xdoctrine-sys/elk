@@ -67,6 +67,13 @@ const exploreLink = computed(() => {
 
     <div class="spacer" shrink hidden sm:block />
     <NavSideItem :text="$t('nav.settings')" to="/settings" icon="i-ri:settings-3-line" :command="command" />
+
+    <div flex="~ col" gap-1>
+      <NavSideItem to="/lives">
+        <div i-ri:live-line />
+        <span>{{ $t('nav.lives') }}</span>
+      </NavSideItem>
+    </div>
   </nav>
 </template>
 
