@@ -26,12 +26,12 @@ function handleShowCommit() {
 
     <div flex="~ col gap4" w-full items-center justify-center my5>
       <img :alt="$t('app_logo')" :src="`${''}/logo.svg`" w-24 h-24 class="rtl-flip">
-      <!-- <p text-lg>
+      <p text-lg>
         {{ $t('app_desc_short') }}
-      </p> -->
+      </p>
     </div>
 
-    <!-- <template v-if="isHydrated">
+    <template v-if="isHydrated">
       <SettingsItem
         :text="$t('settings.about.version')"
         :to="showCommit ? `https://github.com/elk-zone/elk/commit/${buildInfo.commit}` : undefined"
@@ -47,7 +47,7 @@ function handleShowCommit() {
       </SettingsItem>
 
       <SettingsItem :text="$t('settings.about.built_at')" :content="builtTime" />
-    </template> -->
+    </template>
 
     <div h-1px bg-border my2 />
 
@@ -58,14 +58,14 @@ function handleShowCommit() {
 
 
 
-    <!-- <LazySettingsSponsorsList /> -->
+    <LazySettingscopie sList />
 
-    <!-- <p px5 mb1 text-secondary>
-      {{ $t('settings.about.sponsors_body_2') }}
+    <p px5 mb1 text-secondary>
+      {{ $t('settings.about.copie s_body_2') }}
     </p>
     <p px5 mb2 text-secondary>
-      {{ $t('settings.about.sponsors_body_3') }}
-    </p> -->
+      {{ $t('settings.about.copie s_body_3') }}
+    </p>
 
  
 
