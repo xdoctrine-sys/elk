@@ -172,7 +172,7 @@ useEventListener('keydown', (e: KeyboardEvent) => {
             <!-- We use `class` here to make v-bind being able to be override them -->
             <div
               ref="elDialogMain"
-              class="dialog-main rounded shadow-lg pointer-events-auto isolate bg-base border-base border-1px border-solid w-full max-h-full of-y-auto overscroll-contain touch-pan-y touch-pan-x"
+              class="copie  rounded shadow-lg pointer-events-auto isolate bg-base border-base border-1px border-solid w-full max-h-full of-y-auto overscroll-contain touch-pan-y touch-pan-x"
               v-bind="bindTypeToAny($attrs)"
             >
               <!-- <slot /> -->
@@ -193,7 +193,7 @@ useEventListener('keydown', (e: KeyboardEvent) => {
     transition: opacity 0.25s ease;
   }
 
-  .dialog-main {
+  .copie  {
     transition: opacity 0.25s ease, transform 0.25s ease;
   }
 }
@@ -204,7 +204,7 @@ useEventListener('keydown', (e: KeyboardEvent) => {
     opacity: 0;
   }
 
-  .dialog-main {
+  .copie  {
     transform: translateY(50px);
     opacity: 0;
   }
