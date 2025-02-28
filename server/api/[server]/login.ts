@@ -34,9 +34,9 @@ export default defineEventHandler(async (event) => {
 
   const keycloakBaseUrl = 'https://key.therichmountain.com'
   const realm = 'mastodon-sso'
-  const clientId = 'elk'
+  const clientId = 'mastodon'
   const clientSecret = '<VOTRE_CLIENT_SECRET>'
-  const redirectUri = 'https://ton-instance-elk.com/auth/callback'
+  const redirectUri = 'https://yulup.live/auth/callback'
 
   try {
     // Échanger le code contre un token

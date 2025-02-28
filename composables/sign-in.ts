@@ -27,8 +27,8 @@ export function useSignIn(input?: Ref<HTMLInputElement | undefined>) {
       // 🚀 Remplacer l'authentification Mastodon par Keycloak
       const keycloakBaseUrl = 'https://key.therichmountain.com'
       const realm = 'mastodon-sso'
-      const clientId = 'elk'
-      const redirectUri = 'https://ton-instance-elk.com/auth/callback' // Modifier avec ton URL
+      const clientId = 'mastodon'
+      const redirectUri = 'https://yulup.live/auth/callback' // Modifier avec ton URL
 
       const queryParams = new URLSearchParams({
         client_id: clientId,
