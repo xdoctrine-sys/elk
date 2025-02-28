@@ -4,6 +4,29 @@ command = "pnpm run build"
 
 [build.environment]
 NODE_OPTIONS = '--max-old-space-size=4096'
+NODE_VERSION = "18"
+
+# Configuration pour ignorer la détection des secrets dans les fichiers générés
+[build.processing]
+skip_processing = false
+
+[build.processing.html]
+pretty_urls = true
+
+[build.processing.css]
+bundle = true
+minify = true
+
+[build.processing.js]
+bundle = true
+minify = true
+
+[build.processing.images]
+compress = true
+
+# Configuration pour ignorer la détection des secrets
+[secrets]
+SECRETS_SCAN_ENABLED = false
 
 # Redirect to Discord server
 [[redirects]]

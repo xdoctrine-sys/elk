@@ -157,16 +157,20 @@ export default defineNuxtConfig({
       env: '',
       base: '',
     },
-    keycloakClientSecret: process.env.KEYCLOAK_CLIENT_SECRET || '',
+    keycloak: {
+      clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || '',
+    },
     public: {
       privacyPolicyUrl: '',
       translateApi: '',
       defaultServer: 'therichmountain.com',
       singleInstance: false,
-      useKeycloak: process.env.USE_KEYCLOAK === 'true',
-      keycloakServer: process.env.KEYCLOAK_SERVER || '',
-      keycloakRealm: process.env.KEYCLOAK_REALM || 'master',
-      keycloakClientId: process.env.KEYCLOAK_CLIENT_ID || '',
+      keycloak: {
+        enabled: process.env.USE_KEYCLOAK === 'true',
+        server: process.env.KEYCLOAK_SERVER || '',
+        realm: process.env.KEYCLOAK_REALM || 'master',
+        clientId: process.env.KEYCLOAK_CLIENT_ID || '',
+      },
     },
     storage: {
       fsBase: 'node_modules/.cache/app',

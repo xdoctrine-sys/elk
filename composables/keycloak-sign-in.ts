@@ -6,8 +6,8 @@ export function useKeycloakSignIn() {
   const { t } = useI18n()
   const config = useRuntimeConfig()
   
-  // Configuration Keycloak - à définir dans votre configuration
-  const keycloakServer = config.public.keycloakServer || 'votre-serveur-keycloak.com'
+  // Vérifier si Keycloak est activé
+  const keycloakEnabled = config.public.keycloak.enabled
 
   const busy = ref(false)
   const error = ref(false)
@@ -46,5 +46,5 @@ export function useKeycloakSignIn() {
     }
   }
 
-  return { busy, displayError, error, oauth }
+  return { busy, displayError, error, oauth, keycloakEnabled }
 } 

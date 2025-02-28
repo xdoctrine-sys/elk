@@ -5,9 +5,9 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   
   // Configuration Keycloak
-  const keycloakServer = config.public.keycloakServer
-  const keycloakRealm = config.public.keycloakRealm || 'master'
-  const keycloakClientId = config.public.keycloakClientId
+  const keycloakServer = config.public.keycloak.server
+  const keycloakRealm = config.public.keycloak.realm || 'master'
+  const keycloakClientId = config.public.keycloak.clientId
   
   if (!keycloakServer || !keycloakClientId) {
     throw createError({
