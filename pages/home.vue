@@ -13,8 +13,23 @@ if (import.meta.client && route.path === '/signin/callback') {
   // Récupérer les paramètres de l'URL
   const server = route.query.server as string
   const token = route.query.token as string
+  const refreshToken = route.query.refresh_token as string
+  const userInfoStr = route.query.user_info as string
   
   if (server && token) {
+    console.log('Callback reçu avec server:', server, 'et token valide')
+    
+    // Essayer de parser les informations utilisateur si disponibles
+    let userInfo = {}
+    try {
+      if (userInfoStr) {
+        userInfo = JSON.parse(userInfoStr)
+        console.log('Informations utilisateur reçues:', userInfo)
+      }
+    } catch (e) {
+      console.error('Erreur lors du parsing des informations utilisateur:', e)
+    }
+    
     // Connecter l'utilisateur avec le token reçu
     loginTo(masto, { 
       server, 
@@ -22,6 +37,10 @@ if (import.meta.client && route.path === '/signin/callback') {
       account: {} as any // Sera rempli par loginTo
     }).then(() => {
       console.log('Authentification réussie')
+      // Stocker le refresh token si disponible
+      if (refreshToken) {
+        localStorage.setItem(`keycloak_refresh_token_${server}`, refreshToken)
+      }
       // Rediriger vers la page d'accueil
       router.push('/home')
     }).catch((error) => {

@@ -75,6 +75,7 @@
     "save_changes": "Enregistrer les changements",
     "sign_in": "Se connecter",
     "sign_in_to": "Se connecter à {0}",
+    "sign_in_with_keycloak": "Se connecter avec Keycloak",
     "switch_account": "Changer de compte",
     "vote": "Voter"
   },
@@ -691,13 +692,17 @@
   },
   "user": {
     "add_existing": "Ajouter un compte existant",
-    "server_address_label": "Adresse du serveur mastodon",
-    "sign_in_desc": "Connectez-vous pour suivre des profils ou des hashtags, aimer, partagez et répondre à des messages, ou interagir à partir de votre compte d'autre serveur.",
-    "sign_in_notice_title": "Affichage de {0} données publiques",
-    "sign_out_account": "Se déconnecter de {0}",
+    "server_address_label": "Adresse du serveur Mastodon",
+    "sign_in_desc": "Connectez-vous pour suivre des profils ou des hashtags, aimer, partager et répondre aux messages, ou interagir depuis votre compte sur un autre serveur.",
+    "sign_in_notice_title": "Consultation des données publiques de {0}",
+    "sign_out_account": "Déconnecter {0}",
     "single_instance_sign_in_desc": "Connectez-vous pour suivre des profils ou des hashtags, aimer, partager et répondre aux messages.",
     "tip_no_account": "Si vous n'avez pas encore de compte Mastodon, {0}.",
-    "tip_register_account": "choisissez votre serveur et enregistrez-en un"
+    "tip_register_account": "choisissez votre serveur et inscrivez-vous",
+    "keycloak_sign_in": "Connexion avec Keycloak",
+    "keycloak_sign_in_desc": "Connectez-vous avec votre compte Keycloak pour accéder à l'application.",
+    "keycloak_help": "Besoin d'aide ? {0}",
+    "keycloak_manage_account": "Gérer votre compte"
   },
   "visibility": {
     "direct": "Personnes mentionnées uniquement",
@@ -712,5 +717,10 @@
   "lives": {
     "title": "Lives en cours",
     "description": "Description du live stream"
+  },
+  "auth": {
+    "login": "Se connecter",
+    "login_with_keycloak": "Se connecter avec Keycloak",
+    "keycloak_description": "Connectez-vous à l'aide de votre compte Keycloak pour accéder à l'application."
   }
 }

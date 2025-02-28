@@ -84,6 +84,7 @@
     "save_changes": "Save changes",
     "sign_in": "Sign in",
     "sign_in_to": "Sign in to {0}",
+    "sign_in_with_keycloak": "Sign in with Keycloak",
     "switch_account": "Switch account",
     "vote": "Vote"
   },
@@ -755,7 +756,11 @@
     "sign_out_account": "Sign out {0}",
     "single_instance_sign_in_desc": "Sign in to follow profiles or hashtags, favorite, share and reply to posts.",
     "tip_no_account": "If you don't have a Mastodon account yet, {0}.",
-    "tip_register_account": "pick your server and register one"
+    "tip_register_account": "pick your server and register one",
+    "keycloak_sign_in": "Sign in with Keycloak",
+    "keycloak_sign_in_desc": "Sign in with your Keycloak account to access the application.",
+    "keycloak_help": "Need help? {0}",
+    "keycloak_manage_account": "Manage your account"
   },
   "visibility": {
     "direct": "Direct",

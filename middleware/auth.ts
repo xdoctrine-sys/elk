@@ -6,6 +6,9 @@ export default defineNuxtRouteMiddleware((to) => {
 
   if (to.path === '/signin/callback')
     return
+    
+  if (to.path === '/signin')
+    return
 
   if (isHydrated.value)
     return handleAuth(to)
@@ -32,7 +35,8 @@ function handleAuth(to: RouteLocationNormalized) {
     if (to.path === '/home' && to.query['share-target'] !== undefined)
       return navigateTo('/share-target')
     else
-      return navigateTo(`/${currentServer.value}/public/local`)
+      // Rediriger vers la page de connexion Keycloak au lieu de la page publique
+      return navigateTo('/signin')
   }
 
   if (to.path === '/')
