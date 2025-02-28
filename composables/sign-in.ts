@@ -21,55 +21,38 @@ export function useSignIn(input?: Ref<HTMLInputElement | undefined>) {
 
     await nextTick()
 
-    if (!singleInstanceServer && server.value)
-      server.value = server.value.split('/')[0]
-
     try {
       let href: string
-      if (singleInstanceServer) {
-        href = await (globalThis.$fetch as any)(`/api/${publicServer.value}/login`, {
-          method: 'POST',
-          body: {
-            force_login: users.value.length > 0,
-            origin: location.origin,
-            lang: userSettings.value.language,
-          },
-        })
-        busy.value = false
-      }
-      else {
-        href = await (globalThis.$fetch as any)(`/api/${server.value || publicServer.value}/login`, {
-          method: 'POST',
-          body: {
-            force_login: users.value.some(u => u.server === server.value),
-            origin: location.origin,
-            lang: userSettings.value.language,
-          },
-        })
-      }
+
+      // 🚀 Remplacer l'authentification Mastodon par Keycloak
+      const keycloakBaseUrl = 'https://key.therichmountain.com'
+      const realm = 'mastodon-sso'
+      const clientId = 'elk'
+      const redirectUri = 'https://ton-instance-elk.com/auth/callback' // Modifier avec ton URL
+
+      const queryParams = new URLSearchParams({
+        client_id: clientId,
+        response_type: 'code',
+        scope: 'openid profile email',
+        redirect_uri: redirectUri,
+      }).toString()
+
+      href = `${keycloakBaseUrl}/realms/${realm}/protocol/openid-connect/auth?${queryParams}`
+
+      // Redirige l'utilisateur vers Keycloak
       location.href = href
     }
     catch (err) {
-      if (singleInstanceServer) {
-        console.error(err)
+      console.error('Erreur lors de la connexion avec Keycloak:', err)
+      displayError.value = true
+      error.value = true
+      await nextTick()
+      input?.value?.focus()
+      await nextTick()
+      setTimeout(() => {
         busy.value = false
-        await openErrorDialog({
-          title: t('common.error'),
-          messages: [t('error.sign_in_error')],
-          close: t('action.close'),
-        })
-      }
-      else {
-        displayError.value = true
-        error.value = true
-        await nextTick()
-        input?.value?.focus()
-        await nextTick()
-        setTimeout(() => {
-          busy.value = false
-          error.value = false
-        }, 512)
-      }
+        error.value = false
+      }, 512)
     }
   }
 

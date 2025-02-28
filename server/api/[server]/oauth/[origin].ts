@@ -1,21 +1,64 @@
-import { stringifyQuery } from 'ufo'
+// import { stringifyQuery } from 'ufo'
 
+// import { defaultUserAgent } from '~/server/utils/shared'
+
+// export default defineEventHandler(async (event) => {
+//   let { server, origin } = getRouterParams(event)
+//   server = server.toLocaleLowerCase().trim()
+//   origin = decodeURIComponent(origin)
+//   const app = await getApp(origin, server)
+
+//   if (!app) {
+//     throw createError({
+//       statusCode: 400,
+//       statusMessage: `App not registered for server: ${server}`,
+//     })
+//   }
+
+//   const { code } = getQuery(event)
+//   if (!code) {
+//     throw createError({
+//       statusCode: 422,
+//       statusMessage: 'Missing authentication code.',
+//     })
+//   }
+
+//   try {
+//     const result: any = await $fetch(`https://${server}/oauth/token`, {
+//       method: 'POST',
+//       headers: {
+//         'user-agent': defaultUserAgent,
+//       },
+//       body: {
+//         client_id: app.client_id,
+//         client_secret: app.client_secret,
+//         redirect_uri: getRedirectURI(origin, server),
+//         grant_type: 'authorization_code',
+//         code,
+//         scope: 'read write follow push',
+//       },
+//       retry: 3,
+//     })
+
+//     const url = `/signin/callback?${stringifyQuery({ server, token: result.access_token, vapid_key: app.vapid_key })}`
+//     await sendRedirect(event, url, 302)
+//   }
+//   catch {
+//     throw createError({
+//       statusCode: 400,
+//       statusMessage: 'Could not complete log in.',
+//     })
+//   }
+// })
+
+
+import { stringifyQuery } from 'ufo'
 import { defaultUserAgent } from '~/server/utils/shared'
 
 export default defineEventHandler(async (event) => {
-  let { server, origin } = getRouterParams(event)
-  server = server.toLocaleLowerCase().trim()
-  origin = decodeURIComponent(origin)
-  const app = await getApp(origin, server)
-
-  if (!app) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: `App not registered for server: ${server}`,
-    })
-  }
-
+  const { origin } = getRouterParams(event)
   const { code } = getQuery(event)
+
   if (!code) {
     throw createError({
       statusCode: 422,
@@ -23,30 +66,53 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  // 🔹 Configuration Keycloak
+  const keycloakBaseUrl = 'https://key.therichmountain.com'
+  const realm = 'mastodon-sso'
+  const clientId = 'yulup'
+  const clientSecret = 'PS8dUikZiOaLSK0hrcX83e3hXcjKYxGu'
+  const redirectUri = getRedirectURI(origin, 'keycloak')
+
   try {
-    const result: any = await $fetch(`https://${server}/oauth/token`, {
+    // 🔹 Échanger le `code` contre un `token` dans Keycloak
+    const result: any = await $fetch(`${keycloakBaseUrl}/realms/${realm}/protocol/openid-connect/token`, {
       method: 'POST',
       headers: {
         'user-agent': defaultUserAgent,
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: {
-        client_id: app.client_id,
-        client_secret: app.client_secret,
-        redirect_uri: getRedirectURI(origin, server),
+      body: new URLSearchParams({
+        client_id: clientId,
+        client_secret: clientSecret,
+        redirect_uri: redirectUri,
         grant_type: 'authorization_code',
         code,
-        scope: 'read write follow push',
-      },
+      }),
       retry: 3,
     })
 
-    const url = `/signin/callback?${stringifyQuery({ server, token: result.access_token, vapid_key: app.vapid_key })}`
+    if (!result.access_token) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Failed to retrieve access token from Keycloak.',
+      })
+    }
+
+    // 🔹 Stocker le token dans un cookie sécurisé
+    setCookie(event, 'access_token', result.access_token, {
+      httpOnly: true,
+      secure: true,
+    })
+
+    // 🔹 Redirection après connexion réussie
+    const url = `/signin/callback?${stringifyQuery({ token: result.access_token })}`
     await sendRedirect(event, url, 302)
   }
-  catch {
+  catch (error) {
+    console.error('Erreur lors de l’échange de code avec Keycloak:', error)
     throw createError({
       statusCode: 400,
-      statusMessage: 'Could not complete log in.',
+      statusMessage: 'Could not complete log in with Keycloak.',
     })
   }
 })

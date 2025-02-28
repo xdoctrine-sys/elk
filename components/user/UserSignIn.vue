@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import Fuse from 'fuse.js'
 
 const input = ref<HTMLInputElement | undefined>()
@@ -172,6 +172,38 @@ onClickOutside(input, () => {
       </span>
     </div>
     <button flex="~ row" gap-x-2 items-center btn-solid mt2 :disabled="!server || busy">
+      <span v-if="busy" aria-hidden="true" block animate animate-spin preserve-3d class="rtl-flip">
+        <span block i-ri:loader-2-fill aria-hidden="true" />
+      </span>
+      <span v-else aria-hidden="true" block i-ri:login-circle-line class="rtl-flip" />
+      {{ $t('action.sign_in') }}
+    </button>
+  </form>
+</template> -->
+<script setup lang="ts">
+const { busy, error, displayError, oauth } = useSignIn()
+</script>
+
+<template>
+  <form text-center justify-center items-center max-w-150 py6 flex="~ col gap-3" @submit.prevent="oauth">
+    <!-- Logo et titre -->
+    <div flex="~ center" items-end mb2 gap-x-2>
+      <img :src="`/${''}logo.svg`" w-12 h-12 mxa height="48" width="48" :alt="$t('app_logo')" class="rtl-flip">
+      <div text-3xl>
+        {{ $t('action.sign_in') }}
+      </div>
+    </div>
+
+    <!-- Texte informatif -->
+    <div text-secondary text-sm flex>
+      <div i-ri:lightbulb-line me-1 />
+      <span>
+        Connectez-vous avec votre compte Keycloak.
+      </span>
+    </div>
+
+    <!-- Bouton de connexion avec Keycloak -->
+    <button flex="~ row" gap-x-2 items-center btn-solid mt2 @click="oauth">
       <span v-if="busy" aria-hidden="true" block animate animate-spin preserve-3d class="rtl-flip">
         <span block i-ri:loader-2-fill aria-hidden="true" />
       </span>
