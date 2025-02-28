@@ -1,7 +1,7 @@
 import { stringifyQuery } from 'ufo'
 
 export default defineEventHandler(async (event) => {
-  const origin = decodeURIComponent(getRouterParams(event).origin)
+  const origin = decodeURIComponent(event.context.params.origin)
   const config = useRuntimeConfig()
   
   // Configuration Keycloak
@@ -43,7 +43,15 @@ export default defineEventHandler(async (event) => {
         code: code as string,
         redirect_uri: redirectUri,
       }).toString(),
-    }).then(res => res.json())
+    }).then(res => {
+      if (!res.ok) {
+        throw new Error(`Erreur lors de l'échange du code: ${res.status} ${res.statusText}`)
+      }
+      return res.json()
+    }).catch(error => {
+      console.error("Erreur lors de l'échange du code:", error)
+      throw error
+    })
 
     // Récupération des informations utilisateur
     const userInfoEndpoint = `https://${keycloakServer}/realms/${keycloakRealm}/protocol/openid-connect/userinfo`
@@ -52,7 +60,16 @@ export default defineEventHandler(async (event) => {
       headers: {
         Authorization: `Bearer ${result.access_token}`,
       },
-    }).then(res => res.json())
+    }).then(res => {
+      if (!res.ok) {
+        throw new Error(`Erreur lors de la récupération des informations utilisateur: ${res.status} ${res.statusText}`)
+      }
+      return res.json()
+    }).catch(error => {
+      console.error("Erreur lors de la récupération des informations utilisateur:", error)
+      // Continuer même si on ne peut pas récupérer les infos utilisateur
+      return {}
+    })
 
     // Redirection vers la page de callback avec le token
     const url = `/signin/callback?${stringifyQuery({ 

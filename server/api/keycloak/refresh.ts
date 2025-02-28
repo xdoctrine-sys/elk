@@ -1,4 +1,17 @@
 export default defineEventHandler(async (event) => {
+  // Pour les requêtes OPTIONS (preflight CORS)
+  if (event.method === 'OPTIONS') {
+    event.node.res.statusCode = 204
+    event.node.res.setHeader('Access-Control-Allow-Origin', '*')
+    event.node.res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+    event.node.res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    event.node.res.setHeader('Access-Control-Max-Age', '86400')
+    return {}
+  }
+
+  // Ajouter des headers CORS pour les autres requêtes
+  event.node.res.setHeader('Access-Control-Allow-Origin', '*')
+
   const config = useRuntimeConfig()
   
   // Configuration Keycloak
@@ -28,7 +41,7 @@ export default defineEventHandler(async (event) => {
   try {
     // Échanger le refresh token contre un nouveau token d'accès
     const tokenEndpoint = `https://${keycloakServer}/realms/${keycloakRealm}/protocol/openid-connect/token`
-    const result = await fetch(tokenEndpoint, {
+    const response = await fetch(tokenEndpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -39,7 +52,18 @@ export default defineEventHandler(async (event) => {
         client_secret: keycloakClientSecret,
         refresh_token: refreshToken,
       }).toString(),
-    }).then(res => res.json())
+    })
+    
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error('Erreur lors du rafraîchissement du token:', response.status, errorText)
+      throw createError({
+        statusCode: response.status,
+        statusMessage: `Échec du rafraîchissement du token: ${response.statusText}`,
+      })
+    }
+    
+    const result = await response.json()
 
     // Retourner les nouveaux tokens
     return {

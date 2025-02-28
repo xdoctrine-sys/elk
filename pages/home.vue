@@ -30,11 +30,24 @@ if (import.meta.client && route.path === '/signin/callback') {
       console.error('Erreur lors du parsing des informations utilisateur:', e)
     }
     
+    // Créer un compte factice pour l'authentification
+    const account = {
+      id: (userInfo as any).sub || 'keycloak-user',
+      username: (userInfo as any).preferred_username || 'keycloak-user',
+      display_name: (userInfo as any).name || 'Keycloak User',
+      avatar: '',
+      header: '',
+      acct: (userInfo as any).preferred_username || 'keycloak-user',
+      created_at: new Date().toISOString(),
+      emojis: [],
+      fields: [],
+    }
+    
     // Connecter l'utilisateur avec le token reçu
     loginTo(masto, { 
       server, 
       token,
-      account: {} as any // Sera rempli par loginTo
+      account: account as any
     }).then(() => {
       console.log('Authentification réussie')
       // Stocker le refresh token si disponible

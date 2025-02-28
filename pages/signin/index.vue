@@ -23,6 +23,10 @@
                 @click="handleLogin"
               />
             </div>
+            
+            <div v-if="error" class="error-message">
+              {{ error }}
+            </div>
           </div>
         </div>
       </div>
@@ -38,16 +42,18 @@ definePageMeta({
 })
 
 const loading = ref(false)
+const error = ref('')
 
 function handleLogin() {
   loading.value = true
+  error.value = ''
   
   try {
     // Récupérer la configuration Keycloak
     const config = useRuntimeConfig().public.keycloak
     
     if (!config || !config.server || !config.clientId) {
-      console.error('Configuration Keycloak manquante')
+      error.value = 'Configuration Keycloak manquante'
       loading.value = false
       return
     }
@@ -71,6 +77,7 @@ function handleLogin() {
     window.location.href = authUrl.toString()
   } catch (error) {
     console.error('Erreur lors de la redirection vers Keycloak:', error)
+    error.value = 'Erreur lors de la redirection vers Keycloak'
     loading.value = false
   }
 }
@@ -139,5 +146,11 @@ function handleLogin() {
 
 .keycloak-login-button {
   margin-top: 1rem;
+}
+
+.error-message {
+  color: var(--color-error);
+  margin-top: 1rem;
+  text-align: center;
 }
 </style> 
