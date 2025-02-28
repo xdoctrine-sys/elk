@@ -107,7 +107,7 @@ export function useSignIn(input?: Ref<HTMLInputElement | undefined>) {
       const realm = 'mastodon-sso'
       const clientId = 'mastodon'
       // Utiliser l'URL actuelle comme origine pour la redirection
-      const redirectUri = `${window.location.origin}/auth/callback`
+      const redirectUri = `${window.location.origin}/signin/callback`
 
       const queryParams = new URLSearchParams({
         client_id: clientId,

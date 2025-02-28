@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   const keycloakBaseUrl = 'https://key.therichmountain.com'
   const realm = 'mastodon-sso'
   const clientId = 'mastodon'
-  const redirectUri = `${origin}/auth/callback`
+  const redirectUri = `${origin}/signin/callback`
 
   // Construire l'URL d'autorisation Keycloak
   const query = stringifyQuery({
