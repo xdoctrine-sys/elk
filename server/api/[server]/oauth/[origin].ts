@@ -52,8 +52,13 @@ export default defineEventHandler(async (event) => {
       maxAge: 60 * 60 * 24 * 7, // 7 jours
     })
 
-    // 🔹 Redirection après connexion réussie - Utiliser le même format que l'ancien code
-    const url = `/signin/callback?${stringifyQuery({ token: result.access_token })}`
+    // 🔹 Redirection après connexion réussie - Utiliser exactement le même format que l'ancien code
+    // L'ancien code passait server, token et vapid_key
+    const url = `/signin/callback?${stringifyQuery({ 
+      server: 'keycloak', // Utiliser 'keycloak' comme identifiant de serveur
+      token: result.access_token,
+      vapid_key: '' // Laisser vide si non applicable avec Keycloak
+    })}`
     await sendRedirect(event, url, 302)
   }
   catch (error) {
