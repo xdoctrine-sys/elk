@@ -1,10 +1,21 @@
 import { stringifyQuery } from 'ufo'
+
 import { defaultUserAgent } from '~/server/utils/shared'
 
 export default defineEventHandler(async (event) => {
-  const { origin } = getRouterParams(event)
-  const { code } = getQuery(event)
+  let { server, origin } = getRouterParams(event)
+  server = server.toLocaleLowerCase().trim()
+  origin = decodeURIComponent(origin)
+  const app = await getApp(origin, server)
 
+  if (!app) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: `App not registered for server: ${server}`,
+    })
+  }
+
+  const { code } = getQuery(event)
   if (!code) {
     throw createError({
       statusCode: 422,
@@ -12,60 +23,30 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // 🔹 Configuration Keycloak
-  const keycloakBaseUrl = 'https://key.therichmountain.com'
-  const realm = 'mastodon-sso'
-  const clientId = 'mastodon'
-  const clientSecret = 'PS8dUikZiOaLSK0hrcX83e3hXcjKYxGu'
-  const redirectUri = `${origin}/signin/callback` // Modifier pour utiliser /signin/callback
-
   try {
-    // 🔹 Échanger le `code` contre un `token` dans Keycloak
-    const result: any = await $fetch(`${keycloakBaseUrl}/realms/${realm}/protocol/openid-connect/token`, {
+    const result: any = await $fetch(`https://${server}/oauth/token`, {
       method: 'POST',
       headers: {
         'user-agent': defaultUserAgent,
-        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: new URLSearchParams({
-        client_id: clientId,
-        client_secret: clientSecret,
-        redirect_uri: redirectUri,
+      body: {
+        client_id: app.client_id,
+        client_secret: app.client_secret,
+        redirect_uri: getRedirectURI(origin, server),
         grant_type: 'authorization_code',
         code,
-      }),
+        scope: 'read write follow push',
+      },
       retry: 3,
     })
 
-    if (!result.access_token) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Failed to retrieve access token from Keycloak.',
-      })
-    }
-
-    // 🔹 Stocker le token dans un cookie sécurisé
-    setCookie(event, 'access_token', result.access_token, {
-      httpOnly: true,
-      secure: true,
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7, // 7 jours
-    })
-
-    // 🔹 Redirection après connexion réussie - Utiliser exactement le même format que l'ancien code
-    // L'ancien code passait server, token et vapid_key
-    const url = `/signin/callback?${stringifyQuery({ 
-      server: 'keycloak', // Utiliser 'keycloak' comme identifiant de serveur
-      token: result.access_token,
-      vapid_key: '' // Laisser vide si non applicable avec Keycloak
-    })}`
+    const url = `/signin/callback?${stringifyQuery({ server, token: result.access_token, vapid_key: app.vapid_key })}`
     await sendRedirect(event, url, 302)
   }
-  catch (error) {
-    console.error("Erreur lors de l'échange de code avec Keycloak:", error)
+  catch {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Could not complete log in with Keycloak.',
+      statusMessage: 'Could not complete log in.',
     })
   }
 })

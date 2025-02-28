@@ -1,19 +1,22 @@
 <script setup lang="ts">
-const { busy, oauth, singleInstanceServer } = useSignIn()
+// Utiliser le composable Keycloak au lieu du composable standard
+const { busy, oauth } = useKeycloakSignIn()
+const config = useRuntimeConfig()
+const useKeycloak = config.public.useKeycloak || false
 </script>
 
 <template>
   <div p8 lg:flex="~ col gap2" hidden>
     <p v-if="isHydrated" text-sm>
       <i18n-t keypath="user.sign_in_notice_title">
-        <strong>{{ currentServer }}</strong>
+        <strong>{{ useKeycloak ? 'Keycloak' : currentServer }}</strong>
       </i18n-t>
     </p>
     <p text-sm text-secondary>
-      {{ $t(singleInstanceServer ? 'user.single_instance_sign_in_desc' : 'user.sign_in_desc') }}
+      {{ $t(useKeycloak ? 'user.keycloak_sign_in_desc' : 'user.sign_in_desc') }}
     </p>
     <button
-      v-if="singleInstanceServer"
+      v-if="useKeycloak"
       flex="~ row" gap-x-2 items-center justify-center btn-solid text-center rounded-3
       :disabled="busy"
       @click="oauth()"
@@ -22,7 +25,7 @@ const { busy, oauth, singleInstanceServer } = useSignIn()
         <span block i-ri:loader-2-fill aria-hidden="true" />
       </span>
       <span v-else aria-hidden="true" block i-ri:login-circle-line class="rtl-flip" />
-      {{ $t('action.sign_in') }}
+      {{ $t('action.sign_in_with_keycloak') }}
     </button>
     <button v-else btn-solid rounded-3 text-center mt-2 select-none @click="openSigninDialog()">
       {{ $t('action.sign_in') }}

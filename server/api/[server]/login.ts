@@ -1,26 +1,26 @@
 import { stringifyQuery } from 'ufo'
 
 export default defineEventHandler(async (event) => {
+  let { server } = getRouterParams(event)
   const { origin, force_login, lang } = await readBody(event)
-  
-  // 🔹 Configuration Keycloak
-  const keycloakBaseUrl = 'https://key.therichmountain.com'
-  const realm = 'mastodon-sso'
-  const clientId = 'mastodon'
-  const redirectUri = `${origin}/signin/callback`
+  server = server.toLocaleLowerCase().trim()
+  const app = await getApp(origin, server)
 
-  // Construire l'URL d'autorisation Keycloak
+  if (!app) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: `App not registered for server: ${server}`,
+    })
+  }
+
   const query = stringifyQuery({
-    client_id: clientId,
-    response_type: 'code',
-    scope: 'openid profile email',
-    redirect_uri: redirectUri,
-    // Conserver le paramètre force_login pour la compatibilité
+    client_id: app.client_id,
     force_login: force_login === true ? 'true' : 'false',
-    // Conserver le paramètre lang pour la compatibilité
-    ui_locales: lang || 'fr',
+    scope: 'read write follow push',
+    response_type: 'code',
+    lang,
+    redirect_uri: getRedirectURI(origin, server),
   })
 
-  // Retourner l'URL d'autorisation Keycloak
-  return `${keycloakBaseUrl}/realms/${realm}/protocol/openid-connect/auth?${query}`
+  return `https://${server}/oauth/authorize?${query}`
 })

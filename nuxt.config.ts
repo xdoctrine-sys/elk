@@ -157,26 +157,25 @@ export default defineNuxtConfig({
       env: '',
       base: '',
     },
+    keycloakClientSecret: process.env.KEYCLOAK_CLIENT_SECRET || '',
     public: {
       privacyPolicyUrl: '',
-      // We use LibreTranslate (https://github.com/LibreTranslate/LibreTranslate) as
-      // our default translation server #76
       translateApi: '',
-      // Use the instance where Elk has its Mastodon account as the default
       defaultServer: 'therichmountain.com',
       singleInstance: false,
+      useKeycloak: process.env.USE_KEYCLOAK === 'true',
+      keycloakServer: process.env.KEYCLOAK_SERVER || '',
+      keycloakRealm: process.env.KEYCLOAK_REALM || 'master',
+      keycloakClientId: process.env.KEYCLOAK_CLIENT_ID || '',
     },
     storage: {
       fsBase: 'node_modules/.cache/app',
     },
   },
   routeRules: {
-    // Static generation
     '/': { prerender: true },
     '/settings/**': { prerender: false },
-    // incremental regeneration
     '/api/list-servers': { swr: true },
-    // CDN cache rules
     '/manifest.webmanifest': {
       headers: {
         'Content-Type': 'application/manifest+json',
@@ -199,17 +198,17 @@ export default defineNuxtConfig({
     publicAssets: [
       {
         dir: resolve('./public/avatars'),
-        maxAge: 24 * 60 * 60 * 30, // 30 days
+        maxAge: 24 * 60 * 60 * 30,
         baseURL: '/avatars',
       },
       {
         dir: resolve('./public/emojis'),
-        maxAge: 24 * 60 * 60 * 15, // 15 days, matching service worker
+        maxAge: 24 * 60 * 60 * 15,
         baseURL: '/emojis',
       },
       {
         dir: resolve('./public/fonts'),
-        maxAge: 24 * 60 * 60 * 365, // 1 year (versioned)
+        maxAge: 24 * 60 * 60 * 365,
         baseURL: '/fonts',
       },
     ],
@@ -263,7 +262,6 @@ export default defineNuxtConfig({
       ],
       meta: [
         { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
-        // open graph social image
         { property: 'og:title', content: 'Yulup' },
         { property: 'og:description', content: 'A Social Media web client' },
         { property: 'og:type', content: 'website' },
@@ -276,9 +274,6 @@ export default defineNuxtConfig({
       ],
     },
   },
-
-  // eslint-disable-next-line ts/ban-ts-comment
-  // @ts-ignore nuxt-security is conditional
   security: {
     headers: {
       crossOriginEmbedderPolicy: false,
@@ -311,7 +306,6 @@ export default defineNuxtConfig({
     lazy: true,
     strategy: 'no_prefix',
     detectBrowserLanguage: false,
-    // relative to i18n dir on rootDir: not yet v4 compat layout
     langDir: '../locales',
     defaultLocale: 'en-US',
     experimental: {
@@ -332,7 +326,6 @@ export default defineNuxtConfig({
 })
 
 declare global {
-  // eslint-disable-next-line ts/no-namespace
   namespace NodeJS {
     interface Process {
       mock?: Record<string, any>
