@@ -1,6 +1,3 @@
-import { useRuntimeConfig, createError, readBody } from 'h3'
-import { $fetch } from 'ofetch'
-
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   
@@ -31,7 +28,7 @@ export default defineEventHandler(async (event) => {
   try {
     // Échanger le refresh token contre un nouveau token d'accès
     const tokenEndpoint = `https://${keycloakServer}/realms/${keycloakRealm}/protocol/openid-connect/token`
-    const result = await $fetch(tokenEndpoint, {
+    const result = await fetch(tokenEndpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -42,7 +39,7 @@ export default defineEventHandler(async (event) => {
         client_secret: keycloakClientSecret,
         refresh_token: refreshToken,
       }).toString(),
-    })
+    }).then(res => res.json())
 
     // Retourner les nouveaux tokens
     return {
