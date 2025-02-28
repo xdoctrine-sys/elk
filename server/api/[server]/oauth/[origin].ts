@@ -71,7 +71,7 @@ export default defineEventHandler(async (event) => {
   const realm = 'mastodon-sso'
   const clientId = 'mastodon'
   const clientSecret = 'PS8dUikZiOaLSK0hrcX83e3hXcjKYxGu'
-  const redirectUri = getRedirectURI(origin, 'keycloak')
+  const redirectUri = `${origin}/auth/callback` // Utiliser l'origine fournie
 
   try {
     // 🔹 Échanger le `code` contre un `token` dans Keycloak
@@ -102,14 +102,16 @@ export default defineEventHandler(async (event) => {
     setCookie(event, 'access_token', result.access_token, {
       httpOnly: true,
       secure: true,
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 jours
     })
 
-    // 🔹 Redirection après connexion réussie
+    // 🔹 Redirection après connexion réussie - Utiliser le même format que l'ancien code
     const url = `/signin/callback?${stringifyQuery({ token: result.access_token })}`
     await sendRedirect(event, url, 302)
   }
   catch (error) {
-    console.error('Erreur lors de l’échange de code avec Keycloak:', error)
+    console.error("Erreur lors de l'échange de code avec Keycloak:", error)
     throw createError({
       statusCode: 400,
       statusMessage: 'Could not complete log in with Keycloak.',
