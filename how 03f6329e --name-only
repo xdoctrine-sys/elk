@@ -1,0 +1,152 @@
+[33m6e32f581[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m d
+[33m50e9e684[m d
+[33mf772832d[m d
+[33mdb7333aa[m d
+[33m7fbd5c0b[m auth v2
+[33m134b9b1f[m d
+[33m10db9e5d[m d
+[33mb875f6bc[m d
+[33m1db6997a[m d
+[33me8b63df8[m d
+[33m03f6329e[m ne auth
+[33mba11422a[m d
+[33me8e46da0[m d
+[33m0f7011c0[m d
+[33m1719637a[m d
+[33m63ff3ad7[m d
+[33m5a490b0b[m d
+[33m56e2a282[m d
+[33m21c7b29e[m d
+[33m85754461[m d
+[33ma701bd1e[m d
+[33mdd4e8981[m d
+[33m671862b3[m s
+[33m85ba565f[m s
+[33m1fa0ec77[m d
+[33m12acd94a[m oo
+[33m9e752753[m add lives buttons
+[33m288ef2c1[m add lives nav
+[33m4846f7de[m dd
+[33m7d9861e3[m d
+[33m0031ae88[m d
+[33m9c8dd35a[m d
+[33mf5b89dfa[m d
+[33m337489e1[m d
+[33m96b7954f[m d
+[33m3920eb74[m d
+[33m33967b66[m d
+[33me87a711e[m d
+[33m93a72f1a[m d
+[33ma4935dd2[m d
+[33m4fd13a09[m d
+[33m59ef9dd0[m d
+[33mbf62c377[m d
+[33md51fa445[m f
+[33m171b1bf3[m d
+[33m5c38c91a[m fix: account avatar should not be streched (#3165)
+[33m3d951ba4[m feat: redirect code.elk.zone to github repository (#3166)
+[33mfce8d79c[m feat(i18n): Update vi-VN.json (#3164)
+[33mbe6aa1e8[m feat: update poll (#3111)
+[33me52b34c6[m fix: account profile page title (#3159)
+[33m8e2a1d58[m feat(i18n): Update it-IT locale (#3162)
+[33m853fc5cf[m feat(i18n): Update pt-PT translation (#3163)
+[33mbf000b70[m feat(i18n): update hu-HU.json (#3160)
+[33m374d1908[m chore: release v0.16.0 (#3158)
+[33m21027870[m feat(i18n): Update it-IT locale (#3145)
+[33mf6a47167[m fix: remove extra padding and hover effect on dark theme (#3157)
+[33me4a3cf00[m fix: prevent infinite account hover card (#3153)
+[33m44320846[m feat(i18n): update eu-ES.json (#3154)
+[33ma7d64fd1[m feat: bluesky-style follow notification (#3151)
+[33m39b2182a[m fix(lang): Update ca-valencia.json (#3146)
+[33m72d6e059[m chore(deps): update devdependencies (#3152)
+[33me2140766[m chore(deps): update dependency @antfu/eslint-config to ^3.14.0 (#3143)
+[33m2ffefc83[m chore(deps): update all non-major dependencies (#3144)
+[33mf5cada0b[m style: fix broken layout "more from" badge in card with square image (#3141)
+[33m2c0052ed[m feat(i18n): update Japanese localization (#3117)
+[33m4d7dc4e5[m chore: update devDependencies except nuxt (#3140)
+[33m5d4e8424[m chore(deps): update devdependencies (major) (#3132)
+[33ma7cd43fc[m fix: disable publish when be bypassed by Ctrl + Enter (#3133)
+[33m2a85c9eb[m chore(deps): update lint (#3131)
+[33m9da6f452[m chore: update devDependencies (#3130)
+[33m9a5497e3[m fix(deps): update vueuse to v12 (major) (#3095)
+[33m29761c6b[m fix(deps): update dependency happy-dom to v16 (#3129)
+[33m7198e1e6[m chore(deps): update pnpm to v9.15.3 (#3128)
+[33m154fdaaa[m chore(utils): remove unnecessary `await` (#3124)
+[33me59f5dbb[m fix(rtl): replace ellipsis span anchor content with bdi (#3123)
+[33me986de7f[m feat(i18n): add missing Spanish timeline and status translations (#3121)
+[33m6cfadd7f[m feat(i18n): update eu-ES.json (#3116)
+[33med70b3c6[m chore: update devDependencies (#3115)
+[33med5d0304[m chore(deps): update dependency @antfu/eslint-config to ^3.12.1 (#3113)
+[33mb179271e[m chore(deps): update all non-major dependencies (#3112)
+[33mcadd2c3f[m feat(i18n): Unify expression in Japanese translation (#3105)
+[33m1281ecf8[m chore(deps): update all non-major dependencies (#3100)
+[33m209330be[m chore: update `consola` to 3.3.1 (#3103)
+[33m08aac8a9[m chore: update dependencies except nuxt (#3102)
+[33m3b6a1762[m chore: downgrade dependencies to avoid 500 error on `/oauth/callback` (#3075)
+[33m5e2df382[m docs: Remove duplicate instruction in ReadMe (#3031)
+[33m371a9966[m feat(i18n): Update vi-VN.json (#3099)
+[33md8710d5b[m feat(i18n): Update it-IT locale (#3098)
+[33m3b33127d[m feat(i18n): update pt-PT translation (#3097)
+[33mdd4076f4[m feat: show pinned posts on individual account page (#2779)
+[33m4c63f6b8[m feat(i18n): Finish catalan translation (#2990)
+[33m7a52a612[m fix: more menu is not opening on click (#3090)
+[33m4928148e[m fix(deps): update dependencies (#3094)
+[33m83513bf6[m fix: MenuBottom settings are always empty (#3091)
+[33m1e156ec8[m chore(deps): update devdependencies (#3092)
+[33me67f6b03[m chore(deps): update lint (#3093)
+[33mfa6c8a8f[m feat(ui): disable publish button (#3085)
+[33mfb411e89[m feat: support 'annual_report' notification type (#3084)
+[33m62e6bdf4[m chore(deps): update devdependencies (#3081)
+[33m4d426247[m chore(deps): update pnpm to v9.15.0 (#3083)
+[33mf8856165[m chore(deps): update dependency vitest to v2.1.8 (#3080)
+[33m900017bb[m chore(deps): update lint (#3082)
+[33mb7cff82a[m chore: update @nuxtjs/i18n to 9.1.1 (#3078)
+[33m6b98b611[m chore(deps): update dependency eslint-plugin-format to ^0.1.3 (#3073)
+[33mcca29e66[m chore(deps): update dependency vitest to v2.1.6 (#3074)
+[33mb4cb027a[m refactor: code from profile avatar image reduced motion setting issue (#3069)
+[33me1b8d5cb[m fix: apply missing reordering to local public timeline (#3071)
+[33m672e057f[m docs: add primary light theme to fix color contrast (#3070)
+[33m7a4b1907[m chore: change default theme color and fix color contrast (#3062)
+[33m302da092[m fix: Add basic user-agent to all mastodon-bound requests (#2277)
+[33m008248ee[m fix(ui): Profile avatar image motion setting #3044 (#3066)
+[33m5753f0b8[m fix(deps): update dependencies (#3048)
+[33m08672d6f[m chore(deps): update pnpm to v9.14.2 (#3065)
+[33m4675599b[m chore(deps): update devdependencies (#3064)
+[33mbeeb30f0[m fix(deps): update dependencies (major) (#2994)
+[33meab541b7[m chore(deps): update dependency @antfu/eslint-config to ^3.9.2 (#3063)
+[33mf4b667fe[m chore: use latest i18n v9 (#3059)
+[33me6ebde3a[m fix: remove extra margins before tags (#3039)
+[33maff55978[m chore: fix `@nuxt/schema` warning (#3061)
+[33m63caf91e[m chore: remove `@vueuse/motion` patch (#3060)
+[33mbeb2b2d3[m chore(deps): update dependency vitest to v2.1.5 (#3051)
+[33mfb5cd0ec[m chore(deps): update lint (#3053)
+[33m62141629[m chore(deps): update pnpm to v9.13.2 (#3054)
+[33m726319ef[m chore(deps): update devdependencies (#3052)
+[33mf742a014[m feat(i18n): update hu-HU.json (#3049)
+[33m428db939[m chore(deps): update all non-major dependencies (#3047)
+[33m019bce35[m chore(deps): update devdependencies (#3046)
+[33m738bc88b[m docs: fix documentation build error (#3045)
+[33m816f4526[m fix(deps): update dependency happy-dom to v15.10.2 [security] (#3041)
+[33mf6265bd3[m fix(deps): update dependency happy-dom to v15.10.2 [security] (#3040)
+[33m9c25621f[m chore(deps): update dependency vitest to v2.1.4 (#3037)
+[33m074deb4c[m chore(deps): update devdependencies (#3038)
+[33mb1428a53[m chore(deps): update lint (#3010)
+[33m54cc0e47[m feat: support wider emoji (#3028)
+[33m9fc75afd[m chore(deps): update pnpm to v9.12.3 (#3026)
+[33maae808e3[m chore(deps): update devdependencies (#3025)
+[33m41346e31[m feat: add credits to creators in link previews using `fediverse:creator` (#3012)
+[33m98a910c6[m feat(i18n): update pt-PT translation (#3024)
+[33m49a5f499[m fix(ui): Avoid duplicate IDs for grouped notifications (#3014)
+[33mc153f719[m fix(i18n): update Basque localisation (#3018)
+[33m83fd1f32[m feat(i18n): Update it-IT locale (#3021)
+[33m86581a71[m fix(i18n): Update vi-VN.json (#3020)
+[33m18b3d36e[m chore: update masto.js to latest version 6.10.1 (#3019)
+[33m2c8307b3[m fix: Do not require Git for development (#3015)
+[33m83fce5d8[m fix(i18n): Allowed translating "No posts here" text (#3016)
+[33m2f3fe825[m fix(i18n): Improved consistency of the German translation (#3013)
+[33m90765772[m fix(ui): fix and adjust bottom navigation preview on setting page (#2818)
+[33mdac42e06[m feat(a11y): make menu buttons in 'More' dropdown selectable with the keyboard (#2976)
+[33mae1da4c3[m feat: add 6 new bottom nav buttons (#3011)
+[33m78b013dc[m chore(deps): update dependency vitest to v2.1.3 (#3008)
+[33m2d66e6f5[m chore(deps): update pnpm to v9.12.2 (#3009)
+[33m9440527f[m fix(i18n): Fixed some German
