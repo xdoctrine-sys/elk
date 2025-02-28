@@ -1,4 +1,4 @@
-import { stringifyQuery } from 'ufo'
+import { getKeycloakRedirectURI, exchangeCodeForToken, getUserInfo, buildCallbackUrl } from '~/server/utils/keycloak'
 
 export default defineEventHandler(async (event) => {
   const origin = decodeURIComponent(getRouterParams(event).origin)
@@ -26,38 +26,29 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    // Échange du code contre un token
-    const tokenEndpoint = `https://${keycloakServer}/realms/${keycloakRealm}/protocol/openid-connect/token`
-    const result = await $fetch(tokenEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        grant_type: 'authorization_code',
-        client_id: keycloakClientId,
-        client_secret: keycloakClientSecret,
-        code: code as string,
-        redirect_uri: `${origin}/api/keycloak/oauth/${encodeURIComponent(origin)}`,
-      }).toString(),
-    })
+    // Obtenir l'URI de redirection
+    const redirectUri = getKeycloakRedirectURI(origin)
+    
+    // Échanger le code contre un token
+    const result = await exchangeCodeForToken(
+      code as string,
+      redirectUri,
+      keycloakServer,
+      keycloakRealm,
+      keycloakClientId,
+      keycloakClientSecret
+    )
 
-    // Récupération des informations utilisateur
-    const userInfoEndpoint = `https://${keycloakServer}/realms/${keycloakRealm}/protocol/openid-connect/userinfo`
-    const userInfo = await $fetch(userInfoEndpoint, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${result.access_token}`,
-      },
-    })
+    // Récupérer les informations utilisateur
+    const userInfo = await getUserInfo(result.access_token, keycloakServer, keycloakRealm)
 
-    // Redirection vers la page de callback avec le token
-    const url = `/signin/callback?${stringifyQuery({ 
+    // Rediriger vers la page de callback avec le token
+    const url = buildCallbackUrl({ 
       server: keycloakServer,
       token: result.access_token,
       refresh_token: result.refresh_token,
       user_info: JSON.stringify(userInfo)
-    })}`
+    })
     
     await sendRedirect(event, url, 302)
   }

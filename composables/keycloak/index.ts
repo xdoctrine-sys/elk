@@ -1,5 +1,8 @@
 import { ref } from 'vue'
 
+/**
+ * Composable pour gérer l'authentification Keycloak
+ */
 export function useKeycloakSignIn() {
   const busy = ref(false)
   const error = ref(false)

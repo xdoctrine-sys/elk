@@ -11,8 +11,8 @@
         <CommonButton
           class="w-full"
           :label="$t('auth.login')"
-          :loading="loading"
-          @click="handleLogin"
+          :loading="busy"
+          @click="oauth"
         />
       </div>
     </div>
@@ -20,47 +20,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useKeycloakSignIn } from '~/composables/keycloak'
 
-// État
-const loading = ref(false)
-
-// Fonction pour gérer la connexion
-function handleLogin() {
-  loading.value = true
-  
-  try {
-    // Récupérer la configuration Keycloak
-    const config = useRuntimeConfig().public.keycloak
-    
-    if (!config || !config.server || !config.clientId) {
-      console.error('Configuration Keycloak manquante')
-      loading.value = false
-      return
-    }
-    
-    // Construire l'URL de redirection
-    const origin = window.location.origin
-    const redirectUri = `${origin}/api/keycloak/oauth/${encodeURIComponent(origin)}`
-    
-    // Construire l'URL d'autorisation Keycloak
-    const keycloakServer = config.server
-    const keycloakRealm = config.realm || 'master'
-    const keycloakClientId = config.clientId
-    
-    const authUrl = new URL(`https://${keycloakServer}/realms/${keycloakRealm}/protocol/openid-connect/auth`)
-    authUrl.searchParams.append('client_id', keycloakClientId)
-    authUrl.searchParams.append('redirect_uri', redirectUri)
-    authUrl.searchParams.append('response_type', 'code')
-    authUrl.searchParams.append('scope', 'openid profile email')
-    
-    // Rediriger vers Keycloak
-    window.location.href = authUrl.toString()
-  } catch (error) {
-    console.error('Erreur lors de la redirection vers Keycloak:', error)
-    loading.value = false
-  }
-}
+// Utiliser le composable pour l'authentification Keycloak
+const { busy, error, displayError, oauth } = useKeycloakSignIn()
 </script>
 
 <style scoped>

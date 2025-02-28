@@ -2,7 +2,7 @@
   <div class="signin-page">
     <div class="signin-container">
       <div class="signin-header">
-        <img src="/elk-logo.svg" alt="Elk Logo" class="signin-logo" />
+        <img src="/logo.svg" alt="Elk Logo" class="signin-logo" />
         <h1 class="signin-title">{{ $t('app_name') }}</h1>
       </div>
       
