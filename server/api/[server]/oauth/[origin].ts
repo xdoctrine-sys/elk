@@ -69,7 +69,7 @@ export default defineEventHandler(async (event) => {
   // 🔹 Configuration Keycloak
   const keycloakBaseUrl = 'https://key.therichmountain.com'
   const realm = 'mastodon-sso'
-  const clientId = 'yulup'
+  const clientId = 'mastodon'
   const clientSecret = 'PS8dUikZiOaLSK0hrcX83e3hXcjKYxGu'
   const redirectUri = getRedirectURI(origin, 'keycloak')
 
