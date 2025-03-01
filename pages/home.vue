@@ -44,6 +44,7 @@ if (import.meta.client && route.path === '/signin/callback') {
     }
     
     // Connecter l'utilisateur avec le token reçu
+    console.log('Tentative de connexion avec:', { server, token, account })
     loginTo(masto, { 
       server, 
       token,
@@ -61,6 +62,7 @@ if (import.meta.client && route.path === '/signin/callback') {
       router.push('/home')
     })
   } else {
+    console.error('Paramètres manquants dans le callback:', route.query)
     // Si pas de token, rediriger simplement
     router.push('/home')
   }

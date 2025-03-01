@@ -31,14 +31,21 @@ function handleAuth(to: RouteLocationNormalized) {
       return navigateTo(`/${currentServer.value}/public/local`)
   }
 
+  // Vérifier si l'utilisateur est authentifié
+  console.log('Auth middleware - currentUser:', currentUser.value)
+  
   if (!currentUser.value) {
-    if (to.path === '/home' && to.query['share-target'] !== undefined)
+    // Si l'utilisateur n'est pas authentifié
+    if (to.path === '/home' && to.query['share-target'] !== undefined) {
       return navigateTo('/share-target')
-    else
-      // Rediriger vers la page de connexion Keycloak au lieu de la page publique
+    } else {
+      // Rediriger vers la page de connexion Keycloak
+      console.log('Redirection vers /signin car utilisateur non authentifié')
       return navigateTo('/signin')
+    }
   }
 
+  // Si l'utilisateur est authentifié et essaie d'accéder à la racine, rediriger vers /home
   if (to.path === '/')
     return navigateTo('/home')
 }
