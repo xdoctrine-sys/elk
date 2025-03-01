@@ -157,29 +157,26 @@ export default defineNuxtConfig({
       env: '',
       base: '',
     },
-    keycloak: {
-      clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || '',
-    },
     public: {
       privacyPolicyUrl: '',
+      // We use LibreTranslate (https://github.com/LibreTranslate/LibreTranslate) as
+      // our default translation server #76
       translateApi: '',
-      defaultServer: 'therichmountain.com',
+      // Use the instance where Elk has its Mastodon account as the default
+      defaultServer: 'm.webtoo.ls',
       singleInstance: false,
-      keycloak: {
-        enabled: process.env.USE_KEYCLOAK === 'true',
-        server: process.env.KEYCLOAK_SERVER || '',
-        realm: process.env.KEYCLOAK_REALM || 'master',
-        clientId: process.env.KEYCLOAK_CLIENT_ID || '',
-      },
     },
     storage: {
       fsBase: 'node_modules/.cache/app',
     },
   },
   routeRules: {
+    // Static generation
     '/': { prerender: true },
     '/settings/**': { prerender: false },
+    // incremental regeneration
     '/api/list-servers': { swr: true },
+    // CDN cache rules
     '/manifest.webmanifest': {
       headers: {
         'Content-Type': 'application/manifest+json',
@@ -202,17 +199,17 @@ export default defineNuxtConfig({
     publicAssets: [
       {
         dir: resolve('./public/avatars'),
-        maxAge: 24 * 60 * 60 * 30,
+        maxAge: 24 * 60 * 60 * 30, // 30 days
         baseURL: '/avatars',
       },
       {
         dir: resolve('./public/emojis'),
-        maxAge: 24 * 60 * 60 * 15,
+        maxAge: 24 * 60 * 60 * 15, // 15 days, matching service worker
         baseURL: '/emojis',
       },
       {
         dir: resolve('./public/fonts'),
-        maxAge: 24 * 60 * 60 * 365,
+        maxAge: 24 * 60 * 60 * 365, // 1 year (versioned)
         baseURL: '/fonts',
       },
     ],
@@ -266,18 +263,22 @@ export default defineNuxtConfig({
       ],
       meta: [
         { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
-        { property: 'og:title', content: 'Yulup' },
-        { property: 'og:description', content: 'A Social Media web client' },
+        // open graph social image
+        { property: 'og:title', content: 'Elk' },
+        { property: 'og:description', content: 'A nimble Mastodon web client' },
         { property: 'og:type', content: 'website' },
         { property: 'og:image', content: 'https://elk.zone/elk-og.png' },
         { property: 'og:image:width', content: '3800' },
         { property: 'og:image:height', content: '1900' },
-        { property: 'og:site_name', content: 'Yulup' },
-        { name: 'twitter:site', content: '@Yulup_zone' },
+        { property: 'og:site_name', content: 'Elk' },
+        { name: 'twitter:site', content: '@elk_zone' },
         { name: 'twitter:card', content: 'summary_large_image' },
       ],
     },
   },
+
+  // eslint-disable-next-line ts/ban-ts-comment
+  // @ts-ignore nuxt-security is conditional
   security: {
     headers: {
       crossOriginEmbedderPolicy: false,
@@ -310,6 +311,7 @@ export default defineNuxtConfig({
     lazy: true,
     strategy: 'no_prefix',
     detectBrowserLanguage: false,
+    // relative to i18n dir on rootDir: not yet v4 compat layout
     langDir: '../locales',
     defaultLocale: 'en-US',
     experimental: {
@@ -330,6 +332,7 @@ export default defineNuxtConfig({
 })
 
 declare global {
+  // eslint-disable-next-line ts/no-namespace
   namespace NodeJS {
     interface Process {
       mock?: Record<string, any>

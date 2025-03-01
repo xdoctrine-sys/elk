@@ -6,9 +6,6 @@ export default defineNuxtRouteMiddleware((to) => {
 
   if (to.path === '/signin/callback')
     return
-    
-  if (to.path === '/signin')
-    return
 
   if (isHydrated.value)
     return handleAuth(to)
@@ -31,21 +28,13 @@ function handleAuth(to: RouteLocationNormalized) {
       return navigateTo(`/${currentServer.value}/public/local`)
   }
 
-  // Vérifier si l'utilisateur est authentifié
-  console.log('Auth middleware - currentUser:', currentUser.value)
-  
   if (!currentUser.value) {
-    // Si l'utilisateur n'est pas authentifié
-    if (to.path === '/home' && to.query['share-target'] !== undefined) {
+    if (to.path === '/home' && to.query['share-target'] !== undefined)
       return navigateTo('/share-target')
-    } else {
-      // Rediriger vers la page de connexion Keycloak
-      console.log('Redirection vers /signin car utilisateur non authentifié')
-      return navigateTo('/signin')
-    }
+    else
+      return navigateTo(`/${currentServer.value}/public/local`)
   }
 
-  // Si l'utilisateur est authentifié et essaie d'accéder à la racine, rediriger vers /home
   if (to.path === '/')
     return navigateTo('/home')
 }

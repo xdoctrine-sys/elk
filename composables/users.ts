@@ -20,14 +20,13 @@ const mock = process.mock
 const users: Ref<UserLogin[]> | RemovableRef<UserLogin[]> = import.meta.server ? ref<UserLogin[]>([]) : ref<UserLogin[]>([]) as RemovableRef<UserLogin[]>
 const nodes = useLocalStorage<Record<string, any>>(STORAGE_KEY_NODES, {}, { deep: true })
 export const currentUserHandle = useLocalStorage<string>(STORAGE_KEY_CURRENT_USER_HANDLE, mock ? mock.user.account.id : '')
-export const instanceStorage = useLocalStorage<Record<string, mastodon.v1.Instance>>(STORAGE_KEY_SERVERS, mock ? mock.server : {}, { deep: true })
+export const instanceStorage = useLocalStorage<Record<string, mastodon.v2.Instance>>(STORAGE_KEY_SERVERS, mock ? mock.server : {}, { deep: true })
 
-export type ElkInstance = Partial<mastodon.v1.Instance> & {
-  uri: string
+export type ElkInstance = Partial<mastodon.v2.Instance> & {
   /** support GoToSocial */
   accountDomain?: string | null
 }
-export function getInstanceCache(server: string): mastodon.v1.Instance | undefined {
+export function getInstanceCache(server: string): mastodon.v2.Instance | undefined {
   return instanceStorage.value[server]
 }
 
@@ -52,7 +51,7 @@ export const currentInstance = computed<null | ElkInstance>(() => {
 })
 
 export function getInstanceDomain(instance: ElkInstance) {
-  return instance.accountDomain || withoutProtocol(instance.uri)
+  return instance.accountDomain || withoutProtocol(instance.domain || '')
 }
 
 export const publicServer = ref('')
@@ -75,7 +74,6 @@ export async function loginTo(
   masto: ElkMasto,
   user: Overwrite<UserLogin, { account?: mastodon.v1.AccountCredentials }>,
 ) {
-  console.log('loginTo appelé avec:', user)
   const { client } = masto
   const instance = mastoLogin(masto, user)
 
@@ -86,7 +84,6 @@ export async function loginTo(
   }).catch(() => undefined)
 
   if (!user?.token) {
-    console.log('Pas de token, définition du serveur public:', user.server)
     publicServer.value = user.server
     publicInstance.value = instance
     return
@@ -97,63 +94,32 @@ export async function loginTo(
   }
 
   const account = getUser()?.account
-  if (account) {
-    console.log('Utilisateur existant trouvé:', account.acct)
+  if (account)
     currentUserHandle.value = account.acct
+
+  const [me, pushSubscription] = await Promise.all([
+    fetchAccountInfo(client.value, user.server),
+    // if PWA is not enabled, don't get push subscription
+    useAppConfig().pwaEnabled
+    // we get 404 response instead empty data
+      ? client.value.v1.push.subscription.fetch().catch(() => Promise.resolve(undefined))
+      : Promise.resolve(undefined),
+  ])
+
+  const existingUser = getUser()
+  if (existingUser) {
+    existingUser.account = me
+    existingUser.pushSubscription = pushSubscription
+  }
+  else {
+    users.value.push({
+      ...user,
+      account: me,
+      pushSubscription,
+    })
   }
 
-  try {
-    console.log('Récupération des informations du compte...')
-    const [me, pushSubscription] = await Promise.all([
-      fetchAccountInfo(client.value, user.server),
-      // if PWA is not enabled, don't get push subscription
-      useAppConfig().pwaEnabled
-      // we get 404 response instead empty data
-        ? client.value.v1.push.subscription.fetch().catch(() => Promise.resolve(undefined))
-        : Promise.resolve(undefined),
-    ])
-
-    console.log('Informations du compte récupérées:', me)
-
-    const existingUser = getUser()
-    if (existingUser) {
-      console.log('Mise à jour de l\'utilisateur existant')
-      existingUser.account = me
-      existingUser.pushSubscription = pushSubscription
-    }
-    else {
-      console.log('Ajout d\'un nouvel utilisateur')
-      users.value.push({
-        ...user,
-        account: me,
-        pushSubscription,
-      })
-    }
-
-    currentUserHandle.value = me.acct
-    console.log('Utilisateur connecté avec succès:', me.acct)
-  } catch (error) {
-    console.error('Erreur lors de la récupération des informations du compte:', error)
-    
-    // Si nous avons un compte fourni, utilisons-le comme fallback
-    if (user.account) {
-      console.log('Utilisation du compte fourni comme fallback')
-      const existingUser = getUser()
-      if (existingUser) {
-        existingUser.account = user.account
-      } else {
-        users.value.push({
-          ...user,
-          account: user.account,
-        })
-      }
-      
-      currentUserHandle.value = user.account.acct
-      console.log('Utilisateur connecté avec le compte fourni:', user.account.acct)
-    } else {
-      throw error
-    }
-  }
+  currentUserHandle.value = me.acct
 }
 
 const accountPreferencesMap = new Map<string, Partial<mastodon.v1.Preference>>()
